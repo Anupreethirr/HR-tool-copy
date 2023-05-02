@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+/* @import "../node_modules/bootstrap/scss/bootstrap"; */
+
+
+.backgroundThemeColor
+{
+    background-color: #f2f2f2;
+    color: #19196f;
+    font-size: medium;
+    font-weight: 500;
+    overflow: hidden;
+}

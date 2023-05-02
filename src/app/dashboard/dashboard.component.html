@@ -1,0 +1,401 @@
+<p-toast [style]="{ marginTop: '80px' }"></p-toast>
+<div id="overlay">
+  <div class="">
+    <span
+      class="spinner-grow spinner-grow-lg overlay-block"
+      role="status"
+      aria-hidden="true"
+    ></span>
+    <div>
+      <span class="sr-only">Please wait while we are loading...</span>
+    </div>
+  </div>
+</div>
+<div class="dashboard" #scrollMe style="overflow: scroll; height: 90vh">
+  <div class="row mt-4">
+    <div class="col-3 block mx-2">
+      <div class="col">
+        <div class="row">
+          <div class="col-10 headColor">Total Employees</div>
+          <div class="col pt-3 px-0">
+            <img
+              src="assets/icons/user.png"
+              alt="img"
+              class="total-icon headColor float-right"
+            />
+          </div>
+        </div>
+        <div *ngIf="!totalemp">
+          <!-- <i class="pi pi-spin pi-spinner" style="font-size: 2rem;margin-left: 10rem; "></i> -->
+          <span
+            class="spinner-grow spinner-grow-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          <span class="sr-only">Loading...</span>
+        </div>
+        <div *ngIf="totalemp">
+          <div class="m-0 p-0">
+            <span class="headColor"> Total Employee : </span> {{ totalemp }}
+          </div>
+          <div class="m-0 p-0">
+            <span class="headColor"> Total Employee Left : </span>
+            {{ emp_left }}
+          </div>
+        </div>
+        <div>
+          <!-- +2103 -->
+        </div>
+      </div>
+    </div>
+
+    <div class="col-3 block mx-4">
+      <div class="col">
+        <div class="row">
+          <div class="col-10 headColor">Attrition Rate</div>
+          <div>
+            <div *ngIf="!totalemp">
+              <span
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Loading...</span>
+            </div>
+            <div *ngIf="totalemp">{{ attration_rate }}%</div>
+          </div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-5 block mx-2">
+      <div class="col">
+        <div class="row">
+          <div class="col-5 headColor">
+            Automated Tree Growth
+
+            <div>Feature name: Gini score</div>
+          </div>
+
+          <div class="col">
+            <div class="row my-2 py-2">
+              <div class="col">
+                <i
+                  class="pi pi-fast-backward"
+                  [style]="enableFbkw"
+                  (click)="fastbkw()"
+                ></i>
+              </div>
+              <div class="col">
+                <i
+                  class="pi pi-step-backward-alt"
+                  [style]="enablePrv"
+                  (click)="prev()"
+                ></i>
+              </div>
+              <div class="col">
+                <i
+                  class="pi headColor pi-play"
+                  [style]="enablePly"
+                  (click)="onplayClick()"
+                ></i>
+              </div>
+              <div class="col">
+                <i
+                  class="pi headColor pi-step-forward-alt"
+                  [style]="enablenxt"
+                  (click)="next()"
+                ></i>
+              </div>
+              <div class="col">
+                <i
+                  class="pi headColor pi-fast-forward"
+                  [style]="enablefwd"
+                  (click)="fastFwd()"
+                ></i>
+              </div>
+            </div>
+          </div>
+          <!-- <div>
+      3.22%
+    </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="col">
+        <div class="row"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3 flex-row d-flex">
+    <div class="col-7 justify-content-start">
+      <div>
+        <i icon="pi pi-info-circle" (click)="showPositionDialog('right')"> </i>
+      </div>
+      <p-organizationChart
+        #op
+        class=""
+        [value]="data1"
+        selectionMode="single"
+        [(selection)]="selectedNode"
+        (onNodeCollapse)="onNodeCollapse($event)"
+        (onNodeExpand)="onNodeExpand($event)"
+        (onNodeSelect)="onNodeSelect($event)"
+        styleClass="company"
+      >
+        <ng-template let-node pTemplate="person" class="block">
+          <div
+            class="node-header"
+            *ngIf="
+              node.label.split('#')[1] == undefined && node.label != undefined
+            "
+            pTooltip="{{ node.label.split('#')[0] }}"
+          >
+            {{ node.label }}
+          </div>
+          <div
+            class="node-header"
+            *ngIf="
+              node.label.split('#')[1] != undefined && node.label != undefined
+            "
+            pTooltip="{{ node.label.split('#')[0] }}"
+          >
+            {{ node.label.split("#")[1] }}
+          </div>
+
+          <div *ngIf="node.label != undefined" class="node-content">
+            <div
+              class="node-val"
+              *ngFor="let val of node.data"
+              pTooltip="{{ val.title }}"
+              pAutoFocus
+              [autofocus]="true"
+            >
+              {{ val.title }}<span *ngIf="val.value">: {{ val.value }}</span>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template let-node pTemplate="department">
+          {{ node.label }}
+        </ng-template>
+      </p-organizationChart>
+    </div>
+    <div class="col-4 ml-6 p-2 feature-block justify-content-end">
+      <div class="features-dialog">
+        <p-dialog
+          header="Recomended Features"
+          [(visible)]="displayPosition"
+          [closable]="false"
+          [position]="position"
+          [modal]="true"
+          [style]="sstyle"
+          [baseZIndex]="10000"
+          [draggable]="true"
+          [resizable]="true"
+        >
+          <p-table
+            [value]="products"
+            styleClass="p-datatable-gridlines"
+            [tableStyle]="{ width: '10rem' }"
+          >
+            <ng-template pTemplate="header">
+              <tr style="height: 34px">
+                <th class="py-0 px-2">Feature</th>
+                <th class="py-0 px-2">Value</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+              <tr style="height: 34px">
+                <td class="py-0 px-2">{{ product.feature }}</td>
+                <td class="py-0 px-2">{{ product.value }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-dialog>
+      </div>
+    </div>
+    <!-- <h5>Basic</h5>
+<p>Hierarchical data with zero configuration.</p>
+<p-organizationChart [value]="data2"></p-organizationChart> -->
+  </div>
+</div>
+
+<p-dialog
+  [(visible)]="displayModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="true"
+  [resizable]="true"
+>
+  <div class="row">
+    <div class="col headColor">
+      Select Feature and Split Values
+      <i
+        class="pi pi-info-circle"
+        pTooltip="Recomended feature"
+        (click)="showPositionDialog('right')"
+      ></i>
+      <i icon="pi pi-info-circle" (click)="showPositionDialog('right')"> </i>
+    </div>
+  </div>
+  <div class="row p-0 mb-3">
+    <div class="col">
+      Pick Feature
+      <div class="col px-0">
+        <!-- <label for="multiselect">MultiSelect</label> -->
+
+        <p-dropdown
+          class="max-width"
+          placeholder="Select a feature"
+          [options]="featureList"
+          [(ngModel)]="selectedFeature"
+          optionLabel="feature"
+          (onChange)="getFeature($event)"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col pr-0">
+      Split Value
+      <div class="col pr-0" *ngIf="this.feature == 'None'">
+        <input
+          type="text"
+          pInputText
+          class="p-inputtext-sm"
+          [(ngModel)]="splitValue"
+          (onChange)="getSplitVal($event)"
+          style="width: 43vh; height: 5.19vh"
+          placeholder="Please type here"
+        />
+      </div>
+      <div class="col pr-0" *ngIf="this.feature != 'None'">
+        <!-- <p-dropdown class="max-width" placeholder="Select split value" [options]="this.splitList" [(ngModel)]="selectedsplit" optionLabel="split"  (onChange)="getval($event)"></p-dropdown> -->
+        <p-multiSelect
+          inputId="multiselect"
+          optionLabel="split"
+          [options]="this.splitList"
+          (onChange)="getSplitVal($event)"
+          [(ngModel)]="selectedsplit"
+          optionLabel="split.key"
+          [filter]="false"
+        ></p-multiSelect>
+      </div>
+    </div>
+    <div class="col-1 mt-4" *ngIf="!enableY">
+      <div class="col mt-2">
+        <i
+          class="pi pi-filter"
+          pTooltip="Add year filter"
+          (click)="enableYear()"
+        ></i>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col px-0" *ngIf="enableY">
+      Enter Year
+
+      <div class="col-6">
+        <p-dropdown
+          class="max-width"
+          placeholder="Select year"
+          [options]="this.FromDateList"
+          [(ngModel)]="selectedsplit"
+          optionLabel="date"
+          (onChange)="getval($event)"
+        ></p-dropdown>
+      </div>
+
+      <!-- <div class="col-1 mt-4" > -->
+      <!-- <div class="col mt-2"> -->
+
+      <!-- </div> -->
+      <!-- </div>  -->
+    </div>
+  </div>
+
+  <!-- </div> -->
+
+  <ng-template class="row" pTemplate="footer p-0">
+    <div class="row">
+      <div class="col-9"></div>
+      <div class="col">
+        <p-button
+          icon="pi pi-check"
+          (click)="submit()"
+          label="Submit"
+          class="p-button-text"
+        ></p-button>
+      </div>
+      <!-- <p-button icon="pi pi-times" (click)="displayModal=false" label="Clear"></p-button> -->
+    </div>
+  </ng-template>
+</p-dialog>
+<p-dialog
+  [(visible)]="displayselectedYearModal"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="true"
+  [resizable]="true"
+>
+  <div class="row">
+    <div class="col headColor">
+      Select Date Range
+      <i class="pi pi-info-circle" pTooltip="Filter by year"></i>
+    </div>
+  </div>
+  <div class="row p-0">
+    <div class="col">
+      From Date
+      <div class="col px-0">
+        <p-dropdown
+          class="max-width"
+          [options]="this.FromDateList"
+          [(ngModel)]="FromselectedDate"
+          placeholder="From date"
+          optionLabel="date"
+          (onChange)="getfromyear($event)"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col">
+      To Date
+
+      <div class="col">
+        <p-dropdown
+          class="max-width"
+          [options]="this.FromDateList"
+          placeholder="Till date"
+          [(ngModel)]="toSelectedDate"
+          optionLabel="date"
+          (onChange)="gettoyear($event)"
+        ></p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer p-0">
+    <div class="row">
+      <div class="col-9"></div>
+      <div class="col">
+        <p-button
+          icon="pi pi-check"
+          (click)="submitYear()"
+          label="Submit"
+          class="p-button-text"
+        ></p-button>
+      </div>
+    </div>
+    <!-- <p-button icon="pi pi-times" (click)="displayModal=false" label="Clear"></p-button> -->
+  </ng-template>
+</p-dialog>
+<!-- <div </div</div>>
+    <p-progressSpinner   [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+</div> -->
+<router-outlet></router-outlet>

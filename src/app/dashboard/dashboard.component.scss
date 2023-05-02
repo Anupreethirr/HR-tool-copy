@@ -1,0 +1,183 @@
+.dashboard
+{
+    padding: 0% 1% 1% 2%;
+    width: 100%;
+margin: 0%;
+
+
+}
+
+
+
+:host ::ng-deep.p-multiselect {
+    display: inline-flex;
+    cursor: pointer;
+    position: relative;
+    -webkit-user-select: none;
+    user-select: none;
+    width: 43vh;
+}
+.sstyle{
+    margin-bottom: 10px;
+}
+::ng-deep.features-dialog    .p-dialog-mask.p-component-overlay
+{
+
+ pointer-events:none !important;
+    background-color:none;
+}
+
+
+::ng-deep.features-dialog .p-component-overlay {
+    position: fixed;
+    top: 0;
+    left: 40%;
+    right: 10%;
+    width: 100%;
+    height: 100%;
+    background-color: transparent !important;
+}
+.active
+{
+    background-color:none;
+}
+
+    .overlay-block
+    {
+        margin-left: 19vh;
+    }
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+    padding: 60vh 80vh;
+    font-size: medium;
+  }
+.organizationChart-block
+{
+    min-width: 45rem;
+    max-width: 45rem;
+    height: 26rem;
+    scroll-behavior: auto;
+    overflow-y: auto;
+    // overflow: auto;
+}
+:host ::ng-deep.p-dropdown
+{
+width: 100%;
+}
+:host ::ng-deep.p-dropdown-items-wrapper
+{
+    height: 80px;
+}
+:host ::ng-deep.p-dialog-header
+{
+
+height: 0px;
+margin: 0px;
+padding: 15px;
+} 
+.max-width
+{
+    width: max-content;
+}
+.total-icon
+{
+    width: 65%;
+}
+.block
+{
+    border: 1px solid #191a6f;
+    border-radius: 10px;
+    padding: 0px 0px 0px 2px;
+    
+}
+.p-datatable-gridlines
+{
+    max-width: 14rem;
+}
+.node-val
+{
+    width: max-content;
+    text-align: center;
+}
+/* .feature-block
+{
+    margin-left: 10%;
+} */
+:host ::ng-deep .p-organizationchart {
+   
+    // transform: rotate(270deg);
+    white-space: nowrap;
+
+    .p-organizationchart-table>tbody>tr>td {
+        text-align: center;
+        vertical-align: top;
+        padding: 0 0.5rem;
+    }
+    .p-person {
+        padding: 0;
+        border: 0 none;
+        width: 21vh;
+        // transform: rotateX(20deg);
+    }
+    .p-organizationchart-line-top {
+        
+        border-color: black;
+    }
+    .node-header, .node-content {
+        // transform: rotate(91deg);
+        padding: .2em .5rem;
+        text-align: center;
+    }
+    .p-component, .p-component * {
+        box-sizing: border-box;
+        white-space: nowrap;
+    }
+    .node-header {
+        background-color: #191a6f;
+        color: #ffffff;
+        border-radius:10px 10px 0px 0px ;
+    }
+
+    .node-content {
+        text-align: center;
+        border: 1px solid #191a6f;
+        border-radius:0px 0px 10px 10px ;
+    }
+
+    .node-content img {
+        border-radius: 50%;
+    }
+
+    .department-cfo {
+        background-color: #7247bc;
+        color: #ffffff;
+    }
+
+    .department-coo {
+        background-color: #a534b6;
+        color: #ffffff;
+    }
+
+    .department-cto {
+        background-color: #e9286f;
+        color: #ffffff;
+    }
+
+ 
+}   .headColor
+{
+    color: #5895b5;
+    font-weight: 700;
+    
+}
